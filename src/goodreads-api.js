@@ -146,6 +146,24 @@ const Goodreads = function(credentials, callbackURL) {
     });
   };
 
+    /**
+   * setAccessToken
+   *
+   * @access public
+   * @returns {promise}
+   */
+  function setAccessToken(token) {
+    return new Promise((resolve, reject) => {
+      _setAccessToken({ ACCESS_TOKEN: token.ACCESS_TOKEN, ACCESS_TOKEN_SECRET: token.ACCESS_TOKEN_SECRET });
+      OAUTHENTICATED = true;
+      resolve();
+    });
+  };
+
+  function dumpAccessToken() {
+    return ({ ACCESS_TOKEN: ACCESS_TOKEN, ACCESS_TOKEN_SECRET: ACCESS_TOKEN_SECRET })
+  }
+
   /**
    * followAuthor
    *
@@ -1094,6 +1112,8 @@ const Goodreads = function(credentials, callbackURL) {
     initOAuth,
     getRequestToken,
     getAccessToken,
+    setAccessToken,
+    dumpAccessToken,
     _setOAuthToken,
     getBooksByAuthor,
     getAuthorInfo,
