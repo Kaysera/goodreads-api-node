@@ -390,6 +390,63 @@ const Goodreads = function(credentials, callbackURL) {
     _execute(oAuthPost, req);
   }
 
+    /**
+   * setReadPercent
+   *
+   * @access public
+   * @param {string} book_id bookID
+   * @param {string} percent percent of the book read
+   * @returns {promise}
+   */
+  function setReadPercent(book_id, percent) {
+    const fn_name = 'setReadStatus()';
+
+    if (!book_id) return Promise.reject(wrongParamsError(fn_name, 'bookID'));
+    if (!percent) return Promise.reject(wrongParamsError(fn_name, 'percent'));
+    if (!OAUTHENTICATED) return Promise.reject(noOAuthError(fn_name));
+
+    const path = `${URL}/user_status.xml`;
+    const authOptions = _getAuthOptions();
+    const options = { 'user_status[book_id]': book_id, 'user_status[percent]': percent };
+
+    const req = Request.builder()
+      .withPath(path)
+      .withQueryParams(options)
+      .withOAuth(authOptions)
+      .build();
+
+    return _execute(oAuthPost, req);
+  }
+
+  
+    /**
+   * setReadPage
+   *
+   * @access public
+   * @param {string} book_id bookID
+   * @param {string} page page of the book
+   * @returns {promise}
+   */
+  function setReadPage(book_id, page) {
+    const fn_name = 'setReadStatus()';
+
+    if (!book_id) return Promise.reject(wrongParamsError(fn_name, 'bookID'));
+    if (!page) return Promise.reject(wrongParamsError(fn_name, 'page'));
+    if (!OAUTHENTICATED) return Promise.reject(noOAuthError(fn_name));
+
+    const path = `${URL}/user_status.xml`;
+    const authOptions = _getAuthOptions();
+    const options = { 'user_status[book_id]': book_id, 'user_status[page]': page };
+
+    const req = Request.builder()
+      .withPath(path)
+      .withQueryParams(options)
+      .withOAuth(authOptions)
+      .build();
+
+    return _execute(oAuthPost, req);
+  }
+
   // TODO
   function addBooksToShelves(bookids, shelves) {
     const path = `${URL}/shelves/ad_book_to_shelves.xml`;
@@ -1116,6 +1173,9 @@ const Goodreads = function(credentials, callbackURL) {
     dumpAccessToken,
     _setOAuthToken,
     getBooksByAuthor,
+    getReadStatus,
+    setReadPercent,
+    setReadPage,
     getAuthorInfo,
     getAllSeriesByAuthor,
     getCurrentUserInfo,
